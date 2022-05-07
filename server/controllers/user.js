@@ -17,7 +17,7 @@ exports.signupUser = async (req, res) => {
     //now some validation..
 
     if (!firstName || !lastName || !email || !password) {
-        return res.status(400).send(`All fields are required!`)
+        return res.status(400).json({ message: `All fields are required!` })
     }
 
 
@@ -27,7 +27,7 @@ exports.signupUser = async (req, res) => {
         const isUserExist = await User.findOne({ email }).exec();
 
         if (isUserExist) {
-            return res.status(400).send(`Email Already EXists! Please Login`)
+            return res.status(400).send({ message: `Email Already EXists! Please Login` })
         }
 
 
@@ -65,7 +65,7 @@ exports.signupUser = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error)
+        return res.status(500).json({ message: error })
     }
 
 
@@ -85,7 +85,7 @@ exports.loginUser = async (req, res) => {
     //some validation...
 
     if (!email || !password) {
-        return res.status(400).send(`All fields required!`)
+        return res.status(400).json({ message: `All fields required!` })
     }
 
     //now check if user exists not in db...
@@ -95,7 +95,7 @@ exports.loginUser = async (req, res) => {
         const isUserExist = await User.findOne({ email }).exec();
 
         if (!isUserExist) {
-            return res.status(404).send(`User not found!`)
+            return res.status(404).json({ message: `User not found!` })
         }
 
 
@@ -107,7 +107,7 @@ exports.loginUser = async (req, res) => {
         //now validation again..
 
         if (!isPassMatch) {
-            return res.status(401).send(`Invalid Credentials`)
+            return res.status(401).json({ message: `Invalid Credentials` })
         }
 
 
@@ -123,6 +123,6 @@ exports.loginUser = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error)
+        return res.status(500).json({ message: error })
     }
 }
